@@ -17,11 +17,7 @@ manifest:
     - name: zephyr
       remote: meinfork
       revision: stm32l100
-    - name: hal_stm32
-      remote: upstream
-      revision: 4ec1fd2e65b4f55eb516b16df73a2dd9f0cf6e1f
-      path: modules/hal/stm32
-      groups:
-        - hal
+      path: zephyr
+      import: true
   self:
     path: app
