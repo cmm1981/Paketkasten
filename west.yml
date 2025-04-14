@@ -24,4 +24,4 @@ manifest:
       groups:
         - hal
   self:
-    path: zephyr
+    path: app
