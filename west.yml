@@ -1,0 +1,27 @@
+#
+# Copyright (c) 2025 Conny Marco Menebröcker
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+manifest:
+  defaults:
+    remote: upstream
+
+  remotes:
+    - name: meinfork
+      url-base: https://github.com/cmm1981
+    - name: upstream
+      url-base: https://github.com/zephyrproject-rtos
+  projects:
+    - name: zephyr
+      remote: meinfork
+      revision: stm32l100
+    - name: hal_stm32
+      remote: upstream
+      revision: 4ec1fd2e65b4f55eb516b16df73a2dd9f0cf6e1f
+      path: modules/hal/stm32
+      groups:
+        - hal
+  self:
+    path: zephyr

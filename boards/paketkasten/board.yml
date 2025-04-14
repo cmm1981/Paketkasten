@@ -1,0 +1,6 @@
+board:
+  name: paketkasten
+  full_name: Paketkasten Schlosselektronik
+  vendor: dhl
+  socs:
+    - name: stm32l100xb

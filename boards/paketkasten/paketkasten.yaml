@@ -1,0 +1,14 @@
+identifier: paketkasten
+name: Paketkasten Schlosselektronik
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+ram: 10
+flash: 128
+supported:
+  - gpio
+  - eeprom
+  - watchdog
+vendor: dhl

@@ -1,0 +1,105 @@
+/*
+ * Copyright (c) 2025 Conny Marco Menebröcker
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/dts-v1/;
+#include <st/l1/stm32l100Xb.dtsi>
+#include <st/l1/stm32l100r(8-b)tx-pinctrl.dtsi>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
+
+/ {
+	model = "Paketkasten Schlosselektronik";
+	compatible = "dhl,paketkasten";
+
+	chosen {
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+	};
+
+	leds: leds {
+		compatible = "gpio-leds";
+		green_led_0: led_0 {
+			gpios = <&gpioc 2 GPIO_ACTIVE_HIGH>;
+		};
+		red_led_1: led_1 {
+			gpios = <&gpioc 1 GPIO_ACTIVE_HIGH>;
+		};
+		vdd_en: output {
+			gpios = <&gpioa 8 GPIO_ACTIVE_HIGH>;
+			label = "Enable VDD to power up peripherals";
+		};
+	};
+
+	aliases {
+		vdden = &vdd_en;
+		led0 = &green_led_0;
+		led1 = &red_led_1;
+		eeprom-0 = &eeprom;
+		watchdog0 = &iwdg;
+		die-temp0 = &die_temp;
+		volt-sensor0 = &vref;
+	};
+};
+
+&clk_hse {
+	clock-frequency = <DT_FREQ_M(8)>;
+	status = "okay";
+};
+
+&clk_lse {
+	status = "okay";
+};
+
+&pll {
+	div = <4>;
+	mul = <8>;
+	/* out of the box, MCO from stlink is not enabled, unlike later discos */
+	clocks = <&clk_hse>;
+	status = "okay";
+};
+
+&rcc {
+	clocks = <&pll>;
+	clock-frequency = <DT_FREQ_M(16)>;
+	ahb-prescaler = <1>;
+	apb1-prescaler = <1>;
+	apb2-prescaler = <1>;
+};
+
+&eeprom {
+	status = "okay";
+};
+
+&iwdg {
+	status = "okay";
+};
+
+&rtc {
+	clocks = <&rcc STM32_CLOCK_BUS_APB1 0x10000000>,
+		 <&rcc STM32_SRC_LSE RTC_SEL(1)>;
+	status = "okay";
+};
+
+
+&die_temp {
+	status = "okay";
+};
+
+&flash0 {
+	partitions {
+		compatible = "fixed-partitions";
+		#address-cells = <1>;
+		#size-cells = <1>;
+
+	};
+};
+
+&dma1 {
+	status = "okay";
+};
+
+&vref {
+	status = "okay";
+};
