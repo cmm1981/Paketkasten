@@ -34,19 +34,80 @@
 		};
 	};
 
+	pwmleds: pwmleds {
+		compatible = "pwm-leds";
+		status = "okay";
+
+		motor_vor: motor_vor {
+			pwms = <&pwm4 1 PWM_USEC(100) PWM_POLARITY_NORMAL>;
+		};
+
+		motor_zur: motor_zur {
+			pwms = <&pwm4 2 PWM_USEC(100) PWM_POLARITY_NORMAL>;
+		};
+	};
+
+	gpio_keys {
+		compatible = "gpio-keys";
+		hall_zu: button0 {
+			label = "Hall_zu";
+			gpios = <&gpioc 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+			zephyr,code = <INPUT_KEY_0>;
+		};
+
+		hall_p_auf: button1 {
+			label = "Hall_Paket_auf";
+			gpios = <&gpioc 5 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+			zephyr,code = <INPUT_KEY_1>;
+		};
+
+		hall_b_auf: button2 {
+			label = "Hall_Brief_auf";
+			gpios = <&gpioc 6 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+			zephyr,code = <INPUT_KEY_2>;
+		};
+
+		paket_auf: button3 {
+			label = "Paketkasten_auf";
+			gpios = <&gpioa 11 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+			zephyr,code = <INPUT_KEY_2>;
+		};
+
+		brief_auf: button4 {
+			label = "Briefkasten_auf";
+			gpios = <&gpioa 12 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+			zephyr,code = <INPUT_KEY_2>;
+		};
+	};
+
 	aliases {
 		vdden = &vdd_en;
 		led0 = &green_led_0;
 		led1 = &red_led_1;
-		eeprom-0 = &eeprom;
+		motorv = &motor_vor;
+		motorz = &motor_zur;
+		hallzu = &hall_zu;
+		hallpauf = &hall_p_auf;
+		hallbauf = &hall_b_auf;
+		paketauf = &paket_auf;
+		briefauf = &brief_auf;
+		/* eeprom-0 = &eeprom;
 		watchdog0 = &iwdg;
 		die-temp0 = &die_temp;
-		volt-sensor0 = &vref;
+		volt-sensor0 = &vref; */
 	};
+
+	zephyr,user {
+        io-channels = <&adc1 1>;
+    };
 };
 
 &clk_hse {
 	clock-frequency = <DT_FREQ_M(8)>;
+	status = "okay";
+};
+
+&clk_hsi {
 	status = "okay";
 };
 
@@ -113,4 +174,35 @@
 	pinctrl-names = "default";
 	current-speed = <9600>;
 	status = "okay";
+};
+
+&timers4 {
+	status = "okay";
+
+	pwm4: pwm {
+		pinctrl-0 = <&tim4_ch1_pb6 &tim4_ch2_pb7>;
+		pinctrl-names = "default";
+		status = "okay";
+	};
+};
+
+&adc1 {
+	status = "okay";
+    pinctrl-0 = <&adc_in1_pa1>;
+    pinctrl-names = "default";
+	st,adc-prescaler = <4>;
+
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	channel@1 {
+		reg = <1>;
+		zephyr,gain = "ADC_GAIN_1";
+		zephyr,reference = "ADC_REF_INTERNAL";
+		zephyr,acquisition-time = <ADC_ACQ_TIME_DEFAULT>;
+		zephyr,resolution = <12>;
+	};
+
+	dmas = <&dma1 1 (STM32_DMA_PERIPH_RX | STM32_DMA_PERIPH_16BITS | STM32_DMA_MEM_16BITS | STM32_DMA_PRIORITY_HIGH)>;
+    dma-names = "adc";
 };

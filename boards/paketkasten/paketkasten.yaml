@@ -9,6 +9,8 @@ ram: 10
 flash: 128
 supported:
   - gpio
+  - pwm
+  - adc
   - eeprom
   - watchdog
 vendor: dhl
