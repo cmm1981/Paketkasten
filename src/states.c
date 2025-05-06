@@ -49,8 +49,15 @@ void process_commands()
         switch (cmd) 
         {
             case CMD_OEFFNE_PAKET:
-                goto_warten(get_paket_auf(),STATE_PAKET_OFFEN);
-                motor_set(MOTOR_ZUR,3,get_paket_auf());
+                if(current_state == STATE_GESCHLOSSEN)
+                {
+                    goto_warten(get_paket_auf(),STATE_PAKET_OFFEN);
+                    motor_set(MOTOR_ZUR,3,get_paket_auf());
+                }
+                else
+                {
+                    //STATE_PAKET_GESPERRT: Das Paket muss erst vom Besitzer herausgenommen werden
+                }
                 break;
 
             case CMD_OEFFNE_BRIEF:
@@ -76,7 +83,7 @@ void state_machine(void) {
             // Logik für den Zustand "paket_offen"
             motor_set(MOTOR_VOR,3,get_kasten_zu());
             k_pipe_reset(&command_pipe); //Pipe leeren
-            goto_warten(get_kasten_zu(),STATE_GESCHLOSSEN);
+            goto_warten(get_kasten_zu(),STATE_PAKET_GESPERRT);
             break;
 
         case STATE_BRIEF_OFFEN:
@@ -88,7 +95,7 @@ void state_machine(void) {
 
         case STATE_PAKET_GESPERRT:
             // Logik für den Zustand "paket_gesperrt"
-            printk("State: paket_gesperrt\n");
+            process_commands(); // Ankommende Befehle verarbeiten
             break;
 
         case STATE_PAKET_SICHER_OFFEN:
