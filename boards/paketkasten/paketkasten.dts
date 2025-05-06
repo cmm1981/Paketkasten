@@ -82,8 +82,8 @@
 
 	aliases {
 		vdden = &vdd_en;
-		led0 = &green_led_0;
-		led1 = &red_led_1;
+		ledgreen = &green_led_0;
+		ledred = &red_led_1;
 		motorv = &motor_vor;
 		motorz = &motor_zur;
 		hallzu = &hall_zu;

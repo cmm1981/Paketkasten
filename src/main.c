@@ -11,22 +11,15 @@
 #include "motor.h"
 #include "inputs.h"
 #include "states.h"
+#include "led.h"
 
 
 /* Mainloob will sleep for 100ms */
 #define SLEEP_TIME_MS   100
 
-/* The devicetree node identifier for the "led0"(grün), "led1"(rot) and "vdden" alias. */
-#define LED0_NODE DT_ALIAS(led0)
-#define LED1_NODE DT_ALIAS(led1)
+/* The devicetree node identifier for "vdden" alias. */
 #define VDDEN_NODE DT_ALIAS(vdden)
 
-/*
- * A build error on this line means your board is unsupported.
- * See the sample documentation for information on how to fix this.
- */
-static const struct gpio_dt_spec led = GPIO_DT_SPEC_GET(LED0_NODE, gpios);
-static const struct gpio_dt_spec led2 = GPIO_DT_SPEC_GET(LED1_NODE, gpios);
 static const struct gpio_dt_spec vdd_en = GPIO_DT_SPEC_GET(VDDEN_NODE, gpios);
 
 static const struct device *uart_dev = DEVICE_DT_GET(DT_CHOSEN(zephyr_console));
@@ -60,17 +53,7 @@ int main(void)
     uart_irq_callback_user_data_set(uart_dev, uart_cb, NULL);
     uart_irq_rx_enable(uart_dev);
 
-	if (!gpio_is_ready_dt(&led) || !gpio_is_ready_dt(&led2) || !gpio_is_ready_dt(&vdd_en)) {
-		return 0;
-	}
-
-	ret = gpio_pin_configure_dt(&led, GPIO_OUTPUT_ACTIVE);
-	if (ret < 0) {
-		return 0;
-	}
-
-	ret = gpio_pin_configure_dt(&led2, GPIO_OUTPUT_ACTIVE);
-	if (ret < 0) {
+	if (!gpio_is_ready_dt(&vdd_en)) {
 		return 0;
 	}
 
@@ -85,17 +68,7 @@ int main(void)
 		return 0;
 	}
 
-	/* Schalte grüne LED ein*/
-	ret = gpio_pin_set_dt(&led, 1);
-	if (ret < 0) {
-		return 0;
-	}
-
-	/* Schalte rote LED aus*/
-	ret = gpio_pin_set_dt(&led2, 0);
-	if (ret < 0) {
-		return 0;
-	}
+	led_init();
 
 	motor_init();
 	if (ret < 0) {
