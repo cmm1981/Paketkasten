@@ -9,6 +9,7 @@
 #include "motor.h"
 #include "inputs.h"
 #include "led.h"
+#include "powermanager.h"
 
 typedef enum {
     STATE_GESCHLOSSEN,
@@ -98,6 +99,10 @@ void process_commands()
                 break;
         }
     }
+    else
+    {
+        powermanager_check();
+    }
 }
 
 void state_machine(void) {
@@ -109,6 +114,7 @@ void state_machine(void) {
 
         case STATE_PAKET_OFFEN:
             // Logik für den Zustand "paket_offen"
+            powermanager_trigger();
             motor_set(MOTOR_VOR,3,get_kasten_zu());
             k_pipe_reset(&command_pipe); //Pipe leeren
             goto_warten(get_kasten_zu(),STATE_PAKET_GESPERRT, false);
@@ -116,6 +122,7 @@ void state_machine(void) {
 
         case STATE_BRIEF_OFFEN:
             // Logik für den Zustand "brief_offen"
+            powermanager_trigger();
             motor_set(MOTOR_VOR,3,get_kasten_zu());
             k_pipe_reset(&command_pipe); //Pipe leeren
             goto_warten(get_kasten_zu(),STATE_GESCHLOSSEN, false);
@@ -132,6 +139,7 @@ void state_machine(void) {
             break;
 
         case STATE_WARTEN:
+            powermanager_trigger();
             if(*(warten.condition))
             {
                 current_state = warten.next_state;

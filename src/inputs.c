@@ -7,6 +7,7 @@
 #include <zephyr/kernel.h>
 #include <zephyr/drivers/gpio.h>
 #include "states.h"
+#include "powermanager.h"
 
 
 #define HALL_ZU_NODE	DT_ALIAS(hallzu)
@@ -75,6 +76,8 @@ void hall_change(const struct device *dev, struct gpio_callback *cb, uint32_t pi
 
 void taster_cb(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
+	printk("Taster gedrückt\n");
+	powermanager_wakeup();
 	if((pins & BIT(paket_auf.pin)) != 0)
 	{
 		push_command(CMD_OEFFNE_PAKET);
