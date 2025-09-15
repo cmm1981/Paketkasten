@@ -9,12 +9,14 @@ manifest:
     remote: upstream
 
   remotes:
+    - name: meinfork
+      url-base: https://github.com/cmm1981
     - name: upstream
       url-base: https://github.com/zephyrproject-rtos
   projects:
     - name: zephyr
-      remote: upstream
-      revision: main
+      remote: meinfork
+      revision: rfid
       path: zephyr
       import: true
   self:

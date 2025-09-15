@@ -11,5 +11,6 @@ int inputs_init(void);
 bool *get_kasten_zu(void);
 bool *get_paket_auf(void);
 bool *get_brief_auf(void);
+bool get_jumper_bit(void);
 
 #endif // INPUTS_H

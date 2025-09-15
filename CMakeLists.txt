@@ -10,4 +10,11 @@ find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 
 project(application)
 
-target_sources(app PRIVATE src/main.c src/motor.c src/inputs.c src/states.c src/led.c src/powermanager.c)
+target_sources(app PRIVATE 	src/main.c
+				src/motor.c
+				src/inputs.c
+				src/states.c
+				src/led.c
+				src/powermanager.c
+				src/rfid.c
+				src/eeprom.c)
