@@ -32,7 +32,7 @@ struct my_rfid_iso14443a_info {
 static bool programming = false;
 
 static void rfid_main(void *p1, void *p2, void *p3) {
-  struct rfid_property props[1];
+  struct rfid_property props[2];
 
   props[0].type = RFID_PROP_SLEEP;
   /* refid_set_properties shall block until a tag is detected*/
