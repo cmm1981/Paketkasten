@@ -9,8 +9,8 @@
 #define STATES_H
 
 typedef enum {
-  CMD_OEFFNE_PAKET,
-  CMD_OEFFNE_BRIEF,
+	CMD_OEFFNE_PAKET,
+	CMD_OEFFNE_BRIEF,
 } command_t;
 
 void push_command(command_t command);

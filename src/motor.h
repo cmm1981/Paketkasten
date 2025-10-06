@@ -10,7 +10,11 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
-typedef enum { MOTOR_STOP, MOTOR_VOR, MOTOR_ZUR } motor_richtung_t;
+typedef enum {
+	MOTOR_STOP,
+	MOTOR_VOR,
+	MOTOR_ZUR
+} motor_richtung_t;
 
 int motor_init(void);
 void motor_set(motor_richtung_t richtung, uint8_t timeout_s, bool *stop);
