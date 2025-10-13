@@ -5,7 +5,10 @@
  */
 #include "led.h"
 #include <zephyr/drivers/gpio.h>
+#include <zephyr/drivers/watchdog.h>
 #include <zephyr/kernel.h>
+
+#define PM_TIMER_MS 5000
 
 /* Todo: Die Zephyr Treiber unterstützen aktuell noch keine Powermodes für den
    STM32L100 sodass er nicht schlafen geht. Die Treiber müssen erweitert werden
@@ -16,29 +19,41 @@
 #define VDDEN_NODE DT_ALIAS(vdden)
 
 static const struct gpio_dt_spec vdd_en = GPIO_DT_SPEC_GET(VDDEN_NODE, gpios);
+static const struct device *wdt_dev = DEVICE_DT_GET(DT_ALIAS(watchdog0));
 
 static struct k_timer sleep_timer;
 static volatile enum {
 	RUNNING,
 	SLEEPING
-} system_state = RUNNING;
+} system_state = RUNNING, old_system_state = RUNNING;
 static struct k_thread *sleep_thread = NULL;
 
 static void sleep_timer_callback(struct k_timer *timer_id)
 {
+	if(system_state == RUNNING)
+	{
+		old_system_state = RUNNING;
+	}
 	system_state = SLEEPING;
 }
 
 void powermanager_trigger(void)
 {
-	k_timer_start(&sleep_timer, K_SECONDS(5), K_NO_WAIT);
+	wdt_feed(wdt_dev, 0);
+	k_timer_start(&sleep_timer, K_MSEC(PM_TIMER_MS), K_NO_WAIT);
 	system_state = RUNNING;
 }
 
 void powermanager_check(void)
 {
+	wdt_feed(wdt_dev, 0);
+
 	if (system_state == SLEEPING) {
-		printk("System entering sleep mode\n");
+		if(old_system_state == RUNNING)
+		{
+			printk("System entering sleep mode\n");
+			old_system_state = SLEEPING;
+		}
 		/* Schalte Versorgung für Peripherie aus */
 		/* This will turn off the VDDEN pin */
 		/* and disable the power to the peripherals */
@@ -47,7 +62,7 @@ void powermanager_check(void)
 		/* This will block the current thread until woken up */
 		/* by powermanager_wakeup() */
 		sleep_thread = k_current_get();
-		k_sleep(K_FOREVER);
+		k_sleep(K_MSEC(PM_TIMER_MS));
 	}
 }
 
@@ -78,6 +93,8 @@ void powermanager_init(void)
 
 void powermanager_wakeup(void)
 {
+	wdt_feed(wdt_dev, 0);
+
 	system_state = RUNNING;
 	if (sleep_thread != NULL) {
 		/* Schalte Versorgung für Peripherie ein */
@@ -88,3 +105,4 @@ void powermanager_wakeup(void)
 		printk("System waking up\n");
 	}
 }
+
