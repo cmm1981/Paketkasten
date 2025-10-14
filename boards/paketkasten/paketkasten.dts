@@ -28,7 +28,7 @@
 		red_led_1: led_1 {
 			gpios = <&gpioc 1 GPIO_ACTIVE_HIGH>;
 		};
-		vdd_en: output {
+		vdd_en:	output {
 			gpios = <&gpioa 8 GPIO_ACTIVE_HIGH>;
 			label = "Enable VDD to power up peripherals";
 		};
@@ -79,14 +79,14 @@
 			zephyr,code = <INPUT_KEY_4>;
 		};
 
-		jumper: button5 {
+		jumper: button5	{
 			label = "Jumper";
 			gpios = <&gpiob 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 			zephyr,code = <INPUT_KEY_5>;
 		};
 	};
 
-	aliases {
+	aliases	{
 		vdden = &vdd_en;
 		ledgreen = &green_led_0;
 		ledred = &red_led_1;
@@ -105,12 +105,126 @@
 	};
 
 	zephyr,user {
-        io-channels = <&adc1 1>;
-    };
+		io-channels = <&adc1 1>;
 
+		unused_pin_a0_cfg: unused_pin_a0_cfg {
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_a0>;
+			pinctrl-names = "default";
+		};
+		unused_pin_b0_cfg: unused_pin_b0_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_b0>;
+			pinctrl-names = "default";
+		};
+		unused_pin_b1_cfg: unused_pin_b1_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_b1>;
+			pinctrl-names = "default";
+		};
+		unused_pin_b2_cfg: unused_pin_b2_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_b2>;
+			pinctrl-names = "default";
+		};
+		unused_pin_b4_cfg: unused_pin_b4_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_b4>;
+			pinctrl-names = "default";
+		};
+		unused_pin_b5_cfg: unused_pin_b5_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_b5>;
+			pinctrl-names = "default";
+		};
+		unused_pin_b8_cfg: unused_pin_b8_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_b8>;
+			pinctrl-names = "default";
+		};
+		unused_pin_b9_cfg: unused_pin_b9_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_b9>;
+			pinctrl-names = "default";
+		};
+		unused_pin_b10_cfg: unused_pin_b10_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_b10>;
+			pinctrl-names = "default";
+		};
+		unused_pin_b11_cfg: unused_pin_b11_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_b11>;
+			pinctrl-names = "default";
+		};
+		unused_pin_c0_cfg: unused_pin_c0_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_c0>;
+			pinctrl-names = "default";
+		};
+		unused_pin_c3_cfg: unused_pin_c3_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_c3>;
+			pinctrl-names = "default";
+		};
+		unused_pin_c7_cfg: unused_pin_c7_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_c7>;
+			pinctrl-names = "default";
+		};
+		unused_pin_c9_cfg: unused_pin_c9_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_c9>;
+			pinctrl-names = "default";
+		};
+		unused_pin_c10_cfg: unused_pin_c10_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_c10>;
+			pinctrl-names = "default";
+		};
+		unused_pin_c11_cfg: unused_pin_c11_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_c11>;
+			pinctrl-names = "default";
+		};
+		unused_pin_c12_cfg: unused_pin_c12_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_c12>;
+			pinctrl-names = "default";
+		};
+		unused_pin_c13_cfg: unused_pin_c13_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_c13>;
+			pinctrl-names = "default";
+		};
+		unused_pin_d2_cfg: unused_pin_d2_cfg
+		{
+			compatible = "zephyr,gpio-pinctrl";
+			pinctrl-0 = <&unused_pin_d2>;
+			pinctrl-names = "default";
+		};
+	};
 };
 
-&clk_hse {
+&clk_hse
+{
 	clock-frequency = <DT_FREQ_M(8)>;
 	status = "okay";
 };
@@ -143,11 +257,9 @@
 };
 
 &rtc {
-	clocks = <&rcc STM32_CLOCK_BUS_APB1 0x10000000>,
-		 <&rcc STM32_SRC_LSE RTC_SEL(1)>;
+	clocks = <&rcc STM32_CLOCK_BUS_APB1 0x10000000>, <&rcc STM32_SRC_LSE RTC_SEL(1)>;
 	status = "okay";
 };
-
 
 /* &die_temp {
 	status = "okay";
@@ -158,7 +270,6 @@
 		compatible = "fixed-partitions";
 		#address-cells = <1>;
 		#size-cells = <1>;
-
 	};
 };
 
@@ -172,8 +283,8 @@
 
 &usart1 {
 	dmas = <&dma1 4 (STM32_DMA_PERIPH_TX | STM32_DMA_PRIORITY_HIGH)>,
-           <&dma1 5 (STM32_DMA_PERIPH_RX | STM32_DMA_PRIORITY_HIGH)>;
-    dma-names = "tx", "rx";
+	<&dma1 5 (STM32_DMA_PERIPH_RX | STM32_DMA_PRIORITY_HIGH)>;
+	dma-names = "tx", "rx";
 	pinctrl-0 = <&usart1_tx_pa9 &usart1_rx_pa10>;
 	pinctrl-names = "default";
 	current-speed = <9600>;
@@ -192,8 +303,8 @@
 
 &adc1 {
 	status = "okay";
-    pinctrl-0 = <&adc_in1_pa1>;
-    pinctrl-names = "default";
+	pinctrl-0 = <&adc_in1_pa1>;
+	pinctrl-names = "default";
 	st,adc-prescaler = <4>;
 
 	#address-cells = <1>;
@@ -207,8 +318,9 @@
 		zephyr,resolution = <12>;
 	};
 
-	dmas = <&dma1 1 (STM32_DMA_PERIPH_RX | STM32_DMA_PERIPH_16BITS | STM32_DMA_MEM_16BITS | STM32_DMA_PRIORITY_HIGH)>;
-    dma-names = "adc";
+	dmas = <&dma1 1 (STM32_DMA_PERIPH_RX | STM32_DMA_PERIPH_16BITS | STM32_DMA_MEM_16BITS |
+			STM32_DMA_PRIORITY_HIGH)>;
+	dma-names = "adc";
 };
 
 &spi1 {
@@ -219,7 +331,7 @@
 	#size-cells = <0>;
 	cs-gpios = <&gpioa 4 GPIO_ACTIVE_LOW>;
 
-	cr95hf: spi-device@0 {
+cr95hf:	spi-device@0 {
 		reg = <0>;
 		spi-max-frequency = <50000>;
 		compatible = "st,cr95hf";
@@ -229,7 +341,7 @@
 	};
 
 	dmas = <&dma1 3 (STM32_DMA_PERIPH_TX | STM32_DMA_PRIORITY_HIGH)>,
-		   <&dma1 2 (STM32_DMA_PERIPH_RX | STM32_DMA_PRIORITY_HIGH)>;
+	<&dma1 2 (STM32_DMA_PERIPH_RX | STM32_DMA_PRIORITY_HIGH)>;
 	dma-names = "tx", "rx";
 };
 
@@ -241,7 +353,7 @@
 	#size-cells = <0>;
 	cs-gpios = <&gpiob 12 GPIO_ACTIVE_LOW>, <&gpioc 8 GPIO_ACTIVE_LOW>;
 
-	eeprom0: eeprom@0 {
+eeprom0: eeprom@0 {
 		reg = <0>;
 		spi-max-frequency = <1000000>;
 		compatible = "atmel,at25";
@@ -252,7 +364,7 @@
 		timeout = <5>;
 	};
 
-	eeprom1: eeprom@1 {
+eeprom1: eeprom@1 {
 		reg = <1>;
 		spi-max-frequency = <1000000>;
 		compatible = "atmel,at25";
@@ -261,5 +373,84 @@
 		pagesize = <64>;
 		address-width = <16>;
 		timeout = <5>;
+	};
+};
+
+&pinctrl {
+	unused_pin_a0: unused_pin_a0_grp {
+		pinmux = <STM32_PINMUX('A', 0, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_b0: unused_pin_b0_grp {
+		pinmux = <STM32_PINMUX('B', 0, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_b1: unused_pin_b1_grp {
+		pinmux = <STM32_PINMUX('B', 1, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_b2: unused_pin_b2_grp {
+		pinmux = <STM32_PINMUX('B', 2, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_b4: unused_pin_b4_grp {
+		pinmux = <STM32_PINMUX('B', 4, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_b5: unused_pin_b5_grp {
+		pinmux = <STM32_PINMUX('B', 5, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_b8: unused_pin_b8_grp {
+		pinmux = <STM32_PINMUX('B', 8, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_b9: unused_pin_b9_grp {
+		pinmux = <STM32_PINMUX('B', 9, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_b10: unused_pin_b10_grp {
+		pinmux = <STM32_PINMUX('B', 10, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_b11: unused_pin_b11_grp {
+		pinmux = <STM32_PINMUX('B', 11, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_c0: unused_pin_c0_grp {
+		pinmux = <STM32_PINMUX('C', 0, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_c3: unused_pin_c3_grp {
+		pinmux = <STM32_PINMUX('C', 3, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_c7: unused_pin_c7_grp {
+		pinmux = <STM32_PINMUX('C', 7, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_c9: unused_pin_c9_grp {
+		pinmux = <STM32_PINMUX('C', 9, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_c10: unused_pin_c10_grp {
+		pinmux = <STM32_PINMUX('C', 10, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_c11: unused_pin_c11_grp {
+		pinmux = <STM32_PINMUX('C', 11, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_c12: unused_pin_c12_grp {
+		pinmux = <STM32_PINMUX('C', 12, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_c13: unused_pin_c13_grp {
+		pinmux = <STM32_PINMUX('C', 13, ANALOG)>;
+		bias-pull-down;
+	};
+	unused_pin_d2: unused_pin_d2_grp {
+		pinmux = <STM32_PINMUX('D', 2, ANALOG)>;
+		bias-pull-down;
 	};
 };
